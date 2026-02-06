@@ -18,12 +18,12 @@ services:
   api:
     build:
       context: ./api
+    env_file:
+    - .env
     environment:
       NODE_ENV: production
       PORT: 3000
       DATABASE_URL: postgresql://app:app_password@db:5432/usermgt?schema=public
-      JWT_ACCESS_SECRET: change_me_access
-      JWT_REFRESH_SECRET: change_me_refresh
       ACCESS_TOKEN_TTL: 15m
       REFRESH_TOKEN_TTL_DAYS: 30
     ports:
