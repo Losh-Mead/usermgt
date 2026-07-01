@@ -17,13 +17,41 @@ model User {
   email           String   @unique
   passwordHash    String
   displayName     String?
-  isActive        Boolean  @default(true)
-  isEmailVerified Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  lastLoginAt     DateTime?
+  role            Role     @default(USER)
+  isActive             Boolean   @default(true)
+  isEmailVerified      Boolean   @default(false)
+  failedLoginAttempts  Int       @default(0)
+  lockedUntil          DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  lastLoginAt          DateTime?
 
-  sessions        UserSession[]
+  sessions            UserSession[]
+  verificationTokens  VerificationToken[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum VerificationTokenType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
+model VerificationToken {
+  id        String                @id @default(uuid())
+  userId    String
+  tokenHash String
+  type      VerificationTokenType
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime              @default(now())
+
+  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
 }
 
 model UserSession {

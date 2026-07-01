@@ -24,7 +24,7 @@ services:
       NODE_ENV: production
       PORT: 3000
       DATABASE_URL: postgresql://app:app_password@db:5432/usermgt?schema=public
-      ACCESS_TOKEN_TTL: 15m
+      ACCESS_TOKEN_TTL_MINUTES: 15
       REFRESH_TOKEN_TTL_DAYS: 30
     ports:
       - "3000:3000"
